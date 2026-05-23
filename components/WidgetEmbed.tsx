@@ -1,34 +1,49 @@
-import Script from "next/script";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { parseWidgetScript } from "@/lib/widget";
 import styles from "./WidgetEmbed.module.css";
 
-const WIDGET_SRC = "https://meg.dh.ai-anima.ai/widget.js";
-const DH_ID = "20622bdf-abb5-4f5a-bb4c-73782d7f288c";
+interface WidgetEmbedProps {
+  scriptHtml: string;
+}
 
-export default function WidgetEmbed() {
-  const apiKey = process.env.NEXT_PUBLIC_DH_API_KEY ?? "";
+export default function WidgetEmbed({ scriptHtml }: WidgetEmbedProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [error, setError] = useState("");
 
-  return (
-    <div className={styles.container}>
-      {!apiKey && (
-        <p className={styles.hint}>
-          Imposta <code>NEXT_PUBLIC_DH_API_KEY</code> nelle variabili d&apos;ambiente
-          per attivare il widget.
-        </p>
-      )}
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-      {/*
-        Script fornito per il widget Digital Humans:
-        src="https://meg.dh.ai-anima.ai/widget.js"
-        data-api-key="<YOUR_ORG_API_KEY>"
-        data-dh-id="20622bdf-abb5-4f5a-bb4c-73782d7f288c"
-      */}
-      <Script
-        id="meg-dh-widget"
-        src={WIDGET_SRC}
-        strategy="afterInteractive"
-        data-api-key={apiKey}
-        data-dh-id={DH_ID}
-      />
-    </div>
-  );
+    setError("");
+    container.innerHTML = "";
+    document.getElementById("user-widget-script")?.remove();
+
+    try {
+      const { src, attributes } = parseWidgetScript(scriptHtml);
+      const script = document.createElement("script");
+      script.id = "user-widget-script";
+      script.src = src;
+      script.async = true;
+
+      for (const [key, value] of Object.entries(attributes)) {
+        script.setAttribute(key, value);
+      }
+
+      container.appendChild(script);
+    } catch {
+      setError("Script widget non valido.");
+    }
+
+    return () => {
+      document.getElementById("user-widget-script")?.remove();
+    };
+  }, [scriptHtml]);
+
+  if (error) {
+    return <p className={styles.error}>{error}</p>;
+  }
+
+  return <div ref={containerRef} className={styles.container} />;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useState } from "react";
+import WidgetSection from "@/components/WidgetSection";
 import styles from "./AdminPanel.module.css";
 
 interface PublicUser {
@@ -133,6 +134,8 @@ export default function AdminPanel() {
           </button>
         </form>
       </section>
+
+      <WidgetSection />
 
       <section className={styles.section}>
         <h2 className={styles.listTitle}>Utenti registrati</h2>

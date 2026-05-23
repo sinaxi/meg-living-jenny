@@ -5,13 +5,8 @@
   animation: fadeIn 0.5s ease;
 }
 
-.hint {
+.error {
   padding: 1.5rem 2rem;
-  font-size: 0.8125rem;
-  color: var(--text-muted);
-}
-
-.hint code {
-  font-family: ui-monospace, monospace;
-  color: var(--text);
+  font-size: 0.875rem;
+  color: var(--error);
 }

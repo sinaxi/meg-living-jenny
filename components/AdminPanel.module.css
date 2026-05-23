@@ -45,7 +45,8 @@
 }
 
 .field input,
-.field select {
+.field select,
+.field textarea {
   background: var(--surface-elevated);
   border: 1px solid var(--border);
   padding: 0.625rem 0.75rem;
@@ -55,8 +56,18 @@
 }
 
 .field input:focus,
-.field select:focus {
+.field select:focus,
+.field textarea:focus {
   border-color: var(--text-muted);
+}
+
+.textarea {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
 }
 
 .field select {
