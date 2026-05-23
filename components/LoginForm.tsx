@@ -44,7 +44,7 @@ export default function LoginForm() {
     <div className={styles.wrapper}>
       <div className={styles.logoBlock}>
         <Image
-          src="/logo.png"
+          src="/meg-living-nero.png"
           alt="MEG Living"
           width={320}
           height={80}

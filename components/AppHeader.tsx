@@ -22,7 +22,7 @@ export default function AppHeader({ username, role }: AppHeaderProps) {
     <header className={styles.header}>
       <div className={styles.left}>
         <Image
-          src="/logo.png"
+          src="/meg-living-nero.png"
           alt="MEG Living"
           width={160}
           height={40}
