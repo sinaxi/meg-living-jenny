@@ -1,16 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
 
 :root {
-  --bg: #000000;
-  --surface: #0a0a0a;
-  --surface-elevated: #111111;
-  --border: #222222;
-  --text: #e8e8e8;
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-elevated: #f8f8f8;
+  --border: #e5e5e5;
+  --text: #1a1a1a;
   --text-muted: #666666;
-  --accent: #3a3a3a;
-  --accent-hover: #4a4a4a;
+  --accent: #2a2a2a;
+  --accent-hover: #444444;
+  --accent-text: #ffffff;
   --error: #c44;
-  --success: #4a8;
+  --success: #2d7a4f;
 }
 
 *,
@@ -24,6 +25,7 @@
 html,
 body {
   height: 100%;
+  background: #ffffff;
 }
 
 body {
@@ -32,6 +34,10 @@ body {
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   line-height: 1.5;
+}
+
+main {
+  background: var(--bg);
 }
 
 a {
