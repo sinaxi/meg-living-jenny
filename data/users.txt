@@ -1,0 +1,2 @@
+# Formato: username:passwordHash:role (admin|user)
+andrea:$2a$10$S65S5VxtoZ8ZWp5h8jEzUuhVyQQRFdIixkhUXCl78NxyV7Y40J8nO:admin

@@ -1,0 +1,88 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  padding: 2rem 1.5rem;
+  animation: fadeIn 0.6s ease;
+}
+
+.logoBlock {
+  margin-bottom: 3.5rem;
+  animation: fadeUp 0.7s ease both;
+}
+
+.logo {
+  width: min(320px, 72vw);
+  height: auto;
+}
+
+.form {
+  width: min(360px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  animation: fadeUp 0.7s 0.1s ease both;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.field input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 0;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.field input:focus {
+  border-bottom-color: var(--text-muted);
+}
+
+.field input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.error {
+  font-size: 0.875rem;
+  color: var(--error);
+}
+
+.submit {
+  margin-top: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background: var(--accent);
+  color: var(--text);
+  border: none;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.submit:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
