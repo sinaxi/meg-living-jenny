@@ -79,8 +79,14 @@ async function readFromLocal(): Promise<string | null> {
 }
 
 async function writeToLocal(content: string): Promise<void> {
-  await fs.mkdir(path.dirname(LOCAL_PATH), { recursive: true });
-  await fs.writeFile(LOCAL_PATH, content, "utf-8");
+  if (process.env.VERCEL) return;
+
+  try {
+    await fs.mkdir(path.dirname(LOCAL_PATH), { recursive: true });
+    await fs.writeFile(LOCAL_PATH, content, "utf-8");
+  } catch {
+    // Filesystem read-only (es. Vercel serverless)
+  }
 }
 
 async function ensureDefaultUsers(): Promise<string> {
@@ -104,8 +110,13 @@ export async function getUsers(): Promise<User[]> {
   }
 
   const defaultContent = await ensureDefaultUsers();
-  await saveUsers(parseUsers(defaultContent));
-  return parseUsers(defaultContent);
+  const users = parseUsers(defaultContent);
+  try {
+    await saveUsers(users);
+  } catch {
+    // Su Vercel senza Blob il seed resta in memoria per la richiesta corrente
+  }
+  return users;
 }
 
 export async function saveUsers(users: User[]): Promise<void> {
