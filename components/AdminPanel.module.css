@@ -14,20 +14,7 @@
   font-size: 1.25rem;
   font-weight: 500;
   letter-spacing: -0.01em;
-  margin-bottom: 0.5rem;
-}
-
-.subtitle {
-  font-size: 0.875rem;
-  color: var(--text-muted);
   margin-bottom: 2rem;
-  line-height: 1.6;
-}
-
-.subtitle code {
-  font-family: ui-monospace, monospace;
-  font-size: 0.8125rem;
-  color: var(--text);
 }
 
 .form {

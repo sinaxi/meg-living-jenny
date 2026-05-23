@@ -86,10 +86,6 @@ export default function AdminPanel() {
     <div className={styles.panel}>
       <section className={styles.section}>
         <h1 className={styles.title}>Gestione utenti</h1>
-        <p className={styles.subtitle}>
-          Crea gli account che possono accedere all&apos;area riservata.
-          Gli utenti vengono salvati in <code>data/users.txt</code>.
-        </p>
 
         <form className={styles.form} onSubmit={handleCreate}>
           <div className={styles.row}>
