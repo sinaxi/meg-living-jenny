@@ -1,12 +1,10 @@
-import { promises as fs } from "fs";
 import path from "path";
-import { list, put } from "@vercel/blob";
 import bcrypt from "bcryptjs";
+import { readDataFile, writeDataFile } from "./blobStorage";
 import type { User, UserRole } from "./types";
 
-const USERS_FILE = "users.txt";
 const BLOB_PATH = "data/users.txt";
-const LOCAL_PATH = path.join(process.cwd(), "data", USERS_FILE);
+const LOCAL_PATH = path.join(process.cwd(), "data", "users.txt");
 
 function parseLine(line: string): User | null {
   const trimmed = line.trim();
@@ -42,53 +40,6 @@ function serializeUsers(users: User[]): string {
   return header + users.map(serializeUser).join("\n") + "\n";
 }
 
-async function readFromBlob(): Promise<string | null> {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return null;
-
-  try {
-    const { blobs } = await list({ prefix: BLOB_PATH, limit: 1 });
-    const blob = blobs.find((b) => b.pathname === BLOB_PATH);
-    if (!blob) return null;
-
-    const response = await fetch(blob.url);
-    if (!response.ok) return null;
-    return response.text();
-  } catch {
-    return null;
-  }
-}
-
-async function writeToBlob(content: string): Promise<void> {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    throw new Error("BLOB_READ_WRITE_TOKEN non configurato");
-  }
-
-  await put(BLOB_PATH, content, {
-    access: "public",
-    addRandomSuffix: false,
-    contentType: "text/plain",
-  });
-}
-
-async function readFromLocal(): Promise<string | null> {
-  try {
-    return await fs.readFile(LOCAL_PATH, "utf-8");
-  } catch {
-    return null;
-  }
-}
-
-async function writeToLocal(content: string): Promise<void> {
-  if (process.env.VERCEL) return;
-
-  try {
-    await fs.mkdir(path.dirname(LOCAL_PATH), { recursive: true });
-    await fs.writeFile(LOCAL_PATH, content, "utf-8");
-  } catch {
-    // Filesystem read-only (es. Vercel serverless)
-  }
-}
-
 async function ensureDefaultUsers(): Promise<string> {
   const adminHash = await bcrypt.hash("AndRot2026!", 10);
   return serializeUsers([
@@ -97,15 +48,9 @@ async function ensureDefaultUsers(): Promise<string> {
 }
 
 export async function getUsers(): Promise<User[]> {
-  const blobContent = await readFromBlob();
-  if (blobContent) {
-    const users = parseUsers(blobContent);
-    if (users.length > 0) return users;
-  }
-
-  const localContent = await readFromLocal();
-  if (localContent) {
-    const users = parseUsers(localContent);
+  const content = await readDataFile(BLOB_PATH, LOCAL_PATH);
+  if (content) {
+    const users = parseUsers(content);
     if (users.length > 0) return users;
   }
 
@@ -114,19 +59,13 @@ export async function getUsers(): Promise<User[]> {
   try {
     await saveUsers(users);
   } catch {
-    // Su Vercel senza Blob il seed resta in memoria per la richiesta corrente
+    // Seed in memoria se il salvataggio non è disponibile
   }
   return users;
 }
 
 export async function saveUsers(users: User[]): Promise<void> {
-  const content = serializeUsers(users);
-
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
-    await writeToBlob(content);
-  }
-
-  await writeToLocal(content);
+  await writeDataFile(BLOB_PATH, LOCAL_PATH, serializeUsers(users));
 }
 
 export async function findUser(username: string): Promise<User | null> {

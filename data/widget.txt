@@ -1,5 +1,4 @@
 <script
   src="https://meg.dh.ai-anima.ai/widget.js"
-  data-api-key="<YOUR_ORG_API_KEY>"
-  data-dh-id="20622bdf-abb5-4f5a-bb4c-73782d7f288c"
-></script>
+  data-api-key="9ac2e0b36c93e554f33cddf9db9c348692aebf77cb30e80ce12ff04c02477134"
+  data-dh-id="20622bdf-abb5-4f5a-bb4c-73782d7f288c"></script>
